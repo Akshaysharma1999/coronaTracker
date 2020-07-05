@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Segment, Statistic, Card, Image } from "semantic-ui-react";
+import { Container, Statistic, Card } from "semantic-ui-react";
 import CountUp from "react-countup";
 import { fetchData, stateTimeData } from "./api";
 import LineChart from "./components/LineChart";
@@ -184,32 +184,145 @@ class App extends React.Component {
   selectState = (selectedState) => {
     this.setState({ selectedState: selectedState.value });
   };
+
+  setDailyConfirmed = () => {
+    if (
+      this.state.selectedState !== null &&
+      this.state.stateTimeDataVar !== undefined
+    ) {
+      if (this.state.stateTimeDataVar[this.state.selectedState] === undefined) {
+        return 0;
+      }
+      let keys = Object.keys(
+        this.state.stateTimeDataVar[this.state.selectedState]
+      );
+      let last = keys[keys.length - 1];
+      return isNaN(
+        this.state.stateTimeDataVar[this.state.selectedState][last].delta
+          .confirmed
+      )
+        ? 0
+        : this.state.stateTimeDataVar[this.state.selectedState][last].delta
+            .confirmed;
+    } else if (
+      this.state.data !== undefined &&
+      this.state.data.statewise !== undefined
+    ) {
+      return isNaN(
+        this.state.data.cases_time_series[
+          this.state.data.cases_time_series.length - 1
+        ].dailyconfirmed
+      )
+        ? 0
+        : this.state.data.cases_time_series[
+            this.state.data.cases_time_series.length - 1
+          ].dailyconfirmed;
+    } else {
+      return 0;
+    }
+  };
+  setDailyCured = () => {
+    if (
+      this.state.selectedState !== null &&
+      this.state.stateTimeDataVar !== undefined
+    ) {
+      if (this.state.stateTimeDataVar[this.state.selectedState] === undefined) {
+        return 0;
+      }
+      let keys = Object.keys(
+        this.state.stateTimeDataVar[this.state.selectedState]
+      );
+      let last = keys[keys.length - 1];
+      return isNaN(
+        this.state.stateTimeDataVar[this.state.selectedState][last].delta
+          .recovered
+      )
+        ? 0
+        : this.state.stateTimeDataVar[this.state.selectedState][last].delta
+            .recovered;
+    } else if (
+      this.state.data !== undefined &&
+      this.state.data.statewise !== undefined
+    ) {
+      return isNaN(
+        this.state.data.cases_time_series[
+          this.state.data.cases_time_series.length - 1
+        ].dailyrecovered
+      )
+        ? 0
+        : this.state.data.cases_time_series[
+            this.state.data.cases_time_series.length - 1
+          ].dailyrecovered;
+    } else {
+      return 0;
+    }
+  };
+  setDailyDeaths = () => {
+    if (
+      this.state.selectedState !== null &&
+      this.state.stateTimeDataVar !== undefined
+    ) {
+      if (this.state.stateTimeDataVar[this.state.selectedState] === undefined) {
+        return 0;
+      }
+      let keys = Object.keys(
+        this.state.stateTimeDataVar[this.state.selectedState]
+      );
+      let last = keys[keys.length - 1];
+      return isNaN(
+        this.state.stateTimeDataVar[this.state.selectedState][last].delta
+          .deceased
+      )
+        ? 0
+        : this.state.stateTimeDataVar[this.state.selectedState][last].delta
+            .deceased;
+    } else if (
+      this.state.data !== undefined &&
+      this.state.data.statewise !== undefined
+    ) {
+      return isNaN(
+        this.state.data.cases_time_series[
+          this.state.data.cases_time_series.length - 1
+        ].dailydeceased
+      )
+        ? 0
+        : this.state.data.cases_time_series[
+            this.state.data.cases_time_series.length - 1
+          ].dailydeceased;
+    } else {
+      return 0;
+    }
+  };
   renderCharts = () => {
     if (this.state.selectedState !== null) {
       return (
         <>
           <Card.Group stackable={true} itemsPerRow={2}>
-            <Card>
+            <Card raised>
               {this.renderLineChartInfected(
                 this.state.stateTimeDataVar[this.state.selectedState]
               )}
             </Card>
-            <Card>
+            <Card raised>
               {this.renderLineChartCured(
                 this.state.stateTimeDataVar[this.state.selectedState]
               )}
             </Card>
-            <Card>
+            <Card raised>
               {this.renderLineChartDeaths(
                 this.state.stateTimeDataVar[this.state.selectedState]
               )}
             </Card>
-            <Card>
+            <Card raised>
               {this.renderLineChartTests(
                 this.state.stateTimeDataVar[this.state.selectedState]
               )}
             </Card>
-            <Card>{this.renderBarChart()}</Card>
+          </Card.Group>
+          <Card.Group>
+            <Card raised centered={true} fluid>
+              {this.renderBarChart()}
+            </Card>
           </Card.Group>
         </>
       );
@@ -217,11 +330,15 @@ class App extends React.Component {
       return (
         <>
           <Card.Group stackable={true} itemsPerRow={2}>
-            <Card>{this.renderLineChartInfected(this.state.data)}</Card>
-            <Card>{this.renderLineChartCured(this.state.data)}</Card>
-            <Card>{this.renderLineChartDeaths(this.state.data)}</Card>
-            <Card>{this.renderLineChartTests(this.state.data)}</Card>
-            <Card>{this.renderBarChart()}</Card>
+            <Card raised>{this.renderLineChartInfected(this.state.data)}</Card>
+            <Card raised>{this.renderLineChartCured(this.state.data)}</Card>
+            <Card raised>{this.renderLineChartDeaths(this.state.data)}</Card>
+            <Card raised>{this.renderLineChartTests(this.state.data)}</Card>
+          </Card.Group>
+          <Card.Group>
+            <Card raised centered={true} fluid>
+              {this.renderBarChart()}
+            </Card>
           </Card.Group>
         </>
       );
@@ -233,8 +350,8 @@ class App extends React.Component {
         if (obj.statecode === this.state.selectedState) {
           return (
             <Card.Group stackable={true} itemsPerRow={"4"}>
-              <Card color="blue">
-                <Statistic>
+              <Card raised color="blue">
+                <Statistic color="blue">
                   <Statistic.Value>
                     <CountUp
                       start={0}
@@ -243,11 +360,15 @@ class App extends React.Component {
                       separator=","
                     />
                   </Statistic.Value>
+                  <Statistic size="mini">
+                    {"+" +
+                      parseInt(this.setDailyConfirmed()).toLocaleString("en")}
+                  </Statistic>
                   <Statistic.Label>Total Cases</Statistic.Label>
                 </Statistic>
               </Card>
-              <Card color="violet">
-                <Statistic>
+              <Card raised color="violet">
+                <Statistic color="violet">
                   <Statistic.Value>
                     <CountUp
                       start={0}
@@ -256,11 +377,12 @@ class App extends React.Component {
                       separator=","
                     />
                   </Statistic.Value>
+                  <Statistic size="mini">{"+0"}</Statistic>
                   <Statistic.Label>Active</Statistic.Label>
                 </Statistic>
               </Card>
-              <Card color="green">
-                <Statistic>
+              <Card raised color="green">
+                <Statistic color="green">
                   <Statistic.Value>
                     <CountUp
                       start={0}
@@ -269,11 +391,14 @@ class App extends React.Component {
                       separator=","
                     />
                   </Statistic.Value>
+                  <Statistic size="mini">
+                    {"+" + parseInt(this.setDailyCured()).toLocaleString("en")}
+                  </Statistic>
                   <Statistic.Label>Cured</Statistic.Label>
                 </Statistic>
               </Card>
-              <Card color="red">
-                <Statistic>
+              <Card raised color="red">
+                <Statistic color="red">
                   <Statistic.Value>
                     <CountUp
                       start={0}
@@ -282,6 +407,9 @@ class App extends React.Component {
                       separator=","
                     />
                   </Statistic.Value>
+                  <Statistic size="mini">
+                    {"+" + parseInt(this.setDailyDeaths()).toLocaleString("en")}
+                  </Statistic>
                   <Statistic.Label>Deaths</Statistic.Label>
                 </Statistic>
               </Card>
@@ -292,8 +420,8 @@ class App extends React.Component {
     } else {
       return (
         <Card.Group stackable={true} itemsPerRow={"4"}>
-          <Card color="blue">
-            <Statistic>
+          <Card raised color="blue">
+            <Statistic color="blue">
               <Statistic.Value>
                 <CountUp
                   start={0}
@@ -302,11 +430,14 @@ class App extends React.Component {
                   separator=","
                 />
               </Statistic.Value>
+              <Statistic size="mini">
+                {"+" + parseInt(this.setDailyConfirmed()).toLocaleString("en")}
+              </Statistic>
               <Statistic.Label>Total Cases</Statistic.Label>
             </Statistic>
           </Card>
-          <Card color="violet">
-            <Statistic>
+          <Card raised color="violet">
+            <Statistic color="violet">
               <Statistic.Value>
                 <CountUp
                   start={0}
@@ -315,11 +446,12 @@ class App extends React.Component {
                   separator=","
                 />
               </Statistic.Value>
+              <Statistic size="mini"> {"+0"}</Statistic>
               <Statistic.Label>Active</Statistic.Label>
             </Statistic>
           </Card>
-          <Card color="green">
-            <Statistic>
+          <Card raised color="green">
+            <Statistic color="green">
               <Statistic.Value>
                 <CountUp
                   start={0}
@@ -328,11 +460,16 @@ class App extends React.Component {
                   separator=","
                 />
               </Statistic.Value>
+
+              <Statistic size="mini" color="green">
+                {"+" + parseInt(this.setDailyCured()).toLocaleString("en")}
+              </Statistic>
+
               <Statistic.Label>Cured</Statistic.Label>
             </Statistic>
           </Card>
-          <Card color="red">
-            <Statistic>
+          <Card raised color="red">
+            <Statistic color="red">
               <Statistic.Value>
                 <CountUp
                   start={0}
@@ -341,6 +478,9 @@ class App extends React.Component {
                   separator=","
                 />
               </Statistic.Value>
+              <Statistic size="mini">
+                {"+" + parseInt(this.setDailyDeaths()).toLocaleString("en")}
+              </Statistic>
               <Statistic.Label>Deaths</Statistic.Label>
             </Statistic>
           </Card>
@@ -354,7 +494,7 @@ class App extends React.Component {
         <img alt="goCorona" src="./corona.png" style={{ maxWidth: "100%" }} />
         {this.renderStats()}
         <br />
-        <SelectState
+        <SelectState       
           data={this.setStateData()}
           selectStateFun={this.selectState}
         />

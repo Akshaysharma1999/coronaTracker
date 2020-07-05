@@ -5,19 +5,25 @@ const options = {
   scales: {
     yAxes: [
       {
-        position:"right",
+        position: "right",
         ticks: {
           min: 0,
           maxTicksLimit: 6,
-          callback(data) {
-            return data / 1000 + "K";
+          callback(data) {           
+            if (Math.floor(data / 1000) === 0) {
+              return data;
+            } else if (Math.floor(data / 1000000) === 0) {
+              return data / 1000 + "K";
+            } else {
+              return data / 1000000 + "M";
+            }
           },
         },
-        
+
         gridLines: {
-          color:"rgb(0,0,0)",
-          drawOnChartArea: false
-        },        
+          color: "rgb(0,0,0)",
+          drawOnChartArea: false,
+        },
       },
     ],
     xAxes: [
@@ -27,8 +33,8 @@ const options = {
           maxTicksLimit: 8,
         },
         gridLines: {
-          color:"rgb(0,0,0)",
-          drawOnChartArea: false
+          color: "rgb(0,0,0)",
+          drawOnChartArea: false,
         },
       },
     ],

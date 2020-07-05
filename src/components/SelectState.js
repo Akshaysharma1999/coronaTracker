@@ -15,10 +15,9 @@ class SelectState extends React.Component {
       return newArr;
     }
   };
-  render() {
-    console.log(this.props);
+  render() { 
     return (
-      <Select
+      <Select      
         placeholder="Select State"
         options={this.returnOptions()}
         onChange={(e, d) => this.props.selectStateFun(d)}
