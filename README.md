@@ -7,7 +7,7 @@
 
 ## Demo
 
-The site is deployed at http://coronatrackerind.herokuapp.com/
+The site is deployed at ```[http://coronatrackerind.herokuapp.com/](http://coronatrackerind.herokuapp.com/)```
 
 ## Built With
 
