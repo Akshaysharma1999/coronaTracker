@@ -10,16 +10,15 @@ class SelectState extends React.Component {
     if (this.props.data !== undefined) {
       let newArr = [];
       this.props.data.data.map((obj, i) => {
-        if (i !== 0) {
-          newArr.push({ value: obj.statecode, text: obj.state });
-        }
+        newArr.push({ value: obj.statecode, text: obj.state });
       });
       return newArr;
     }
   };
   render() {
+    console.log(this.props);
     return (
-      <Select       
+      <Select
         placeholder="Select State"
         options={this.returnOptions()}
         onChange={(e, d) => this.props.selectStateFun(d)}

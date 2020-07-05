@@ -62,8 +62,7 @@ class LineChart extends React.Component {
           backgroundColor: "rgb(239,247,255)",
           fill: true,
           pointRadius: "0.1",
-        };
-        console.log(obj);
+        };        
         return obj;
       } else if (this.props.data.key === "staterecovered") {
         obj = {
