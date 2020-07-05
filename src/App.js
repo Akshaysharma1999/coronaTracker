@@ -102,13 +102,25 @@ class App extends React.Component {
   };
 
   renderBarChart = () => {
-    if (this.state.data.length !== 0) {
+    if (this.state.data.length !== 0 && this.state.selectedState !== null) {
+      // console.log(this.state.data.statewise);
       let arr = [];
-      this.state.data.statewise.map((e, i) => {
-        if (i !== 0) {
+      return this.state.data.statewise.map((e, i) => {
+        if (e.statecode === this.state.selectedState) {
           arr.push(e);
+          return (
+            <BarChart
+              data={{
+                data: arr,
+              }}
+            />
+          );
         }
       });
+    } else if (this.state.data.length !== 0) {
+      let arr = [];
+
+      arr.push(this.state.data.statewise[0]);
       return (
         <BarChart
           data={{
@@ -197,6 +209,7 @@ class App extends React.Component {
                 this.state.stateTimeDataVar[this.state.selectedState]
               )}
             </Card>
+            <Card>{this.renderBarChart()}</Card>
           </Card.Group>
         </>
       );
@@ -208,8 +221,8 @@ class App extends React.Component {
             <Card>{this.renderLineChartCured(this.state.data)}</Card>
             <Card>{this.renderLineChartDeaths(this.state.data)}</Card>
             <Card>{this.renderLineChartTests(this.state.data)}</Card>
+            <Card>{this.renderBarChart()}</Card>
           </Card.Group>
-          <Segment>{this.renderBarChart()}</Segment>
         </>
       );
     }

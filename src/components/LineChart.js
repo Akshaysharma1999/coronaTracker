@@ -1,6 +1,40 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 
+const options = {
+  scales: {
+    yAxes: [
+      {
+        position:"right",
+        ticks: {
+          min: 0,
+          maxTicksLimit: 6,
+          callback(data) {
+            return data / 1000 + "K";
+          },
+        },
+        
+        gridLines: {
+          color:"rgb(0,0,0)",
+          drawOnChartArea: false
+        },        
+      },
+    ],
+    xAxes: [
+      {
+        ticks: {
+          min: 0,
+          maxTicksLimit: 8,
+        },
+        gridLines: {
+          color:"rgb(0,0,0)",
+          drawOnChartArea: false
+        },
+      },
+    ],
+  },
+};
+
 class LineChart extends React.Component {
   constructor() {
     super();
@@ -62,7 +96,7 @@ class LineChart extends React.Component {
           backgroundColor: "rgb(239,247,255)",
           fill: true,
           pointRadius: "0.1",
-        };        
+        };
         return obj;
       } else if (this.props.data.key === "staterecovered") {
         obj = {
@@ -135,6 +169,7 @@ class LineChart extends React.Component {
       });
     }
   };
+
   render() {
     // console.log(this.props);
     return (
@@ -143,6 +178,7 @@ class LineChart extends React.Component {
           labels: this.renderLabels(),
           datasets: [this.setDataSet()],
         }}
+        options={options}
       />
     );
   }
