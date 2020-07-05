@@ -14,13 +14,13 @@ The site is deployed at http://coronatrackerind.herokuapp.com/
 * React.js
 * react-chartjs-2
 
-## HOW TO RUN ON LOCALHOST
+## How To Run On Localhost
 
 * Clone The Repository
 * run ```npm install``` to install all dependencies
 * run ```npm start``` to run the server
 
-## API INFO
+## API Info
 
 * ```https://api.covid19india.org/data.json```
 * ```https://api.covid19india.org/v3/min/timeseries.min.json```
