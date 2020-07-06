@@ -9,7 +9,13 @@ const options = {
           min: 0,
           maxTicksLimit: 4,
           callback(data) {
-            return data / 1000 + "K";
+            if (Math.floor((data + 1) / 1000) === 0) {
+              return data;
+            } else if (Math.floor((data + 1) / 1000000) === 0) {
+              return data / 1000 + "K";
+            } else {
+              return data / 1000000 + "M";
+            }
           },
         },
         gridLines: {
