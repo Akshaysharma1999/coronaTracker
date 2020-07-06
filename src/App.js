@@ -9,7 +9,7 @@ import SelectState from "./components/SelectState";
 class App extends React.Component {
   constructor() {
     super();
-    this.state = { data: [], selectedState: null };
+    this.state = { data: [], selectedState: null, stateTimeDataVar: null };
   }
   componentDidMount = async () => {
     let data = await fetchData();
@@ -197,6 +197,12 @@ class App extends React.Component {
         this.state.stateTimeDataVar[this.state.selectedState]
       );
       let last = keys[keys.length - 1];
+      if (
+        this.state.stateTimeDataVar[this.state.selectedState][last].delta ===
+        undefined
+      ) {
+        return 0;
+      }
       return isNaN(
         this.state.stateTimeDataVar[this.state.selectedState][last].delta
           .confirmed
@@ -206,17 +212,17 @@ class App extends React.Component {
             .confirmed;
     } else if (
       this.state.data !== undefined &&
-      this.state.data.statewise !== undefined
+      this.state.data.statewise !== undefined &&
+      this.state.stateTimeDataVar !== null
     ) {
-      return isNaN(
-        this.state.data.cases_time_series[
-          this.state.data.cases_time_series.length - 1
-        ].dailyconfirmed
-      )
+      let keys = Object.keys(this.state.stateTimeDataVar["TT"]);
+      let last = keys[keys.length - 1];
+      if (this.state.stateTimeDataVar["TT"][last].delta === undefined) {
+        return 0;
+      }
+      return isNaN(this.state.stateTimeDataVar["TT"][last].delta.confirmed)
         ? 0
-        : this.state.data.cases_time_series[
-            this.state.data.cases_time_series.length - 1
-          ].dailyconfirmed;
+        : this.state.stateTimeDataVar["TT"][last].delta.confirmed;
     } else {
       return 0;
     }
@@ -233,6 +239,12 @@ class App extends React.Component {
         this.state.stateTimeDataVar[this.state.selectedState]
       );
       let last = keys[keys.length - 1];
+      if (
+        this.state.stateTimeDataVar[this.state.selectedState][last].delta ===
+        undefined
+      ) {
+        return 0;
+      }
       return isNaN(
         this.state.stateTimeDataVar[this.state.selectedState][last].delta
           .recovered
@@ -242,17 +254,17 @@ class App extends React.Component {
             .recovered;
     } else if (
       this.state.data !== undefined &&
-      this.state.data.statewise !== undefined
+      this.state.data.statewise !== undefined &&
+      this.state.stateTimeDataVar !== null
     ) {
-      return isNaN(
-        this.state.data.cases_time_series[
-          this.state.data.cases_time_series.length - 1
-        ].dailyrecovered
-      )
+      let keys = Object.keys(this.state.stateTimeDataVar["TT"]);
+      let last = keys[keys.length - 1];
+      if (this.state.stateTimeDataVar["TT"][last].delta === undefined) {
+        return 0;
+      }
+      return isNaN(this.state.stateTimeDataVar["TT"][last].delta.recovered)
         ? 0
-        : this.state.data.cases_time_series[
-            this.state.data.cases_time_series.length - 1
-          ].dailyrecovered;
+        : this.state.stateTimeDataVar["TT"][last].delta.recovered;
     } else {
       return 0;
     }
@@ -269,6 +281,12 @@ class App extends React.Component {
         this.state.stateTimeDataVar[this.state.selectedState]
       );
       let last = keys[keys.length - 1];
+      if (
+        this.state.stateTimeDataVar[this.state.selectedState][last].delta ===
+        undefined
+      ) {
+        return 0;
+      }
       return isNaN(
         this.state.stateTimeDataVar[this.state.selectedState][last].delta
           .deceased
@@ -280,15 +298,14 @@ class App extends React.Component {
       this.state.data !== undefined &&
       this.state.data.statewise !== undefined
     ) {
-      return isNaN(
-        this.state.data.cases_time_series[
-          this.state.data.cases_time_series.length - 1
-        ].dailydeceased
-      )
+      let keys = Object.keys(this.state.stateTimeDataVar["TT"]);
+      let last = keys[keys.length - 1];
+      if (this.state.stateTimeDataVar["TT"][last].delta === undefined) {
+        return 0;
+      }
+      return isNaN(this.state.stateTimeDataVar["TT"][last].delta.deceased)
         ? 0
-        : this.state.data.cases_time_series[
-            this.state.data.cases_time_series.length - 1
-          ].dailydeceased;
+        : this.state.stateTimeDataVar["TT"][last].delta.deceased;
     } else {
       return 0;
     }
@@ -489,12 +506,13 @@ class App extends React.Component {
     }
   };
   render() {
+    // console.log(this.state)
     return (
       <Container textAlign="center">
         <img alt="goCorona" src="./corona.png" style={{ maxWidth: "100%" }} />
         {this.renderStats()}
         <br />
-        <SelectState       
+        <SelectState
           data={this.setStateData()}
           selectStateFun={this.selectState}
         />
