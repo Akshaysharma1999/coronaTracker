@@ -310,6 +310,27 @@ class App extends React.Component {
       return 0;
     }
   };
+  renderActiveDiff = (obj) => {
+    if (obj.deltaconfirmed - obj.deltadeaths - obj.deltarecovered < 0) {
+      return obj.deltaconfirmed - obj.deltadeaths - obj.deltarecovered;
+    } else {
+      return `+${obj.deltaconfirmed - obj.deltadeaths - obj.deltarecovered}`;
+    }
+  };
+  renderActiveDiffTotal = () => {
+    if (
+      this.setDailyConfirmed() - this.setDailyCured() - this.setDailyDeaths() <
+      0
+    ) {
+      return (
+        this.setDailyConfirmed() - this.setDailyCured() - this.setDailyDeaths()
+      );
+    } else {
+      return `+${this.setDailyConfirmed() -
+        this.setDailyCured() -
+        this.setDailyDeaths()}`;
+    }
+  };
   renderCharts = () => {
     if (this.state.selectedState !== null) {
       return (
@@ -364,6 +385,7 @@ class App extends React.Component {
   renderStats = () => {
     if (this.state.selectedState !== null) {
       return this.state.data.statewise.map((obj) => {
+        // console.log(obj);
         if (obj.statecode === this.state.selectedState) {
           return (
             <Card.Group stackable={true} itemsPerRow={"4"}>
@@ -394,7 +416,9 @@ class App extends React.Component {
                       separator=","
                     />
                   </Statistic.Value>
-                  <Statistic size="mini">{"+0"}</Statistic>
+                  <Statistic size="mini">
+                    {this.renderActiveDiff(obj)}
+                  </Statistic>
                   <Statistic.Label>Active</Statistic.Label>
                 </Statistic>
               </Card>
@@ -435,6 +459,7 @@ class App extends React.Component {
         }
       });
     } else {
+      console.log(this.state);
       return (
         <Card.Group stackable={true} itemsPerRow={"4"}>
           <Card raised color="blue">
@@ -463,7 +488,7 @@ class App extends React.Component {
                   separator=","
                 />
               </Statistic.Value>
-              <Statistic size="mini"> {"+0"}</Statistic>
+              <Statistic size="mini"> {this.renderActiveDiffTotal()}</Statistic>
               <Statistic.Label>Active</Statistic.Label>
             </Statistic>
           </Card>
