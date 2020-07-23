@@ -312,9 +312,9 @@ class App extends React.Component {
   };
   renderActiveDiff = (obj) => {
     if (obj.deltaconfirmed - obj.deltadeaths - obj.deltarecovered < 0) {
-      return obj.deltaconfirmed - obj.deltadeaths - obj.deltarecovered;
+      return parseInt(obj.deltaconfirmed - obj.deltadeaths - obj.deltarecovered).toLocaleString("en");
     } else {
-      return `+${obj.deltaconfirmed - obj.deltadeaths - obj.deltarecovered}`;
+      return `+${parseInt(obj.deltaconfirmed - obj.deltadeaths - obj.deltarecovered).toLocaleString("en")}`;
     }
   };
   renderActiveDiffTotal = () => {
