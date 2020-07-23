@@ -322,13 +322,13 @@ class App extends React.Component {
       this.setDailyConfirmed() - this.setDailyCured() - this.setDailyDeaths() <
       0
     ) {
-      return (
+      return parseInt(
         this.setDailyConfirmed() - this.setDailyCured() - this.setDailyDeaths()
-      );
+      ).toLocaleString("en");
     } else {
-      return `+${this.setDailyConfirmed() -
-        this.setDailyCured() -
-        this.setDailyDeaths()}`;
+      return `+${parseInt(
+        this.setDailyConfirmed() - this.setDailyCured() - this.setDailyDeaths()
+      ).toLocaleString("en")}`;
     }
   };
   renderCharts = () => {
