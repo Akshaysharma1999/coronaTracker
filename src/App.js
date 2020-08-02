@@ -459,7 +459,7 @@ class App extends React.Component {
         }
       });
     } else {
-      console.log(this.state);
+      // console.log(this.state);
       return (
         <Card.Group stackable={true} itemsPerRow={"4"}>
           <Card raised color="blue">
