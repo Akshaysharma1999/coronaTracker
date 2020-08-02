@@ -8,6 +8,7 @@
 ## Demo
 
 The site is deployed at http://coronatrackerind.herokuapp.com/
+ & at https://coronatrackerappind.netlify.app/ (PWA enabled)
 
 ## Built With
 
